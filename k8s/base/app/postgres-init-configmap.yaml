@@ -15,3 +15,4 @@ data:
     );
     CREATE INDEX IF NOT EXISTS idx_metrics_history_timestamp ON metrics_history(timestamp DESC);
 
+

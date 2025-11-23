@@ -29,3 +29,4 @@ const MetricCard = ({ title, value, icon, color, trend }) => {
 
 export default MetricCard
 
+

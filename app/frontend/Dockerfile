@@ -13,8 +13,8 @@ RUN npm config set registry https://registry.npmjs.org/ && \
 # Copier uniquement les fichiers de dépendances
 COPY package.json ./
 
-# Installer les dépendances avec cache optimisé
-RUN npm install --legacy-peer-deps --no-optional --prefer-offline --no-audit
+# Installer les dépendances avec cache optimisé (garder les optionnelles pour rollup)
+RUN npm install --legacy-peer-deps --prefer-offline --no-audit
 
 # Copier le reste et builder
 COPY . .
