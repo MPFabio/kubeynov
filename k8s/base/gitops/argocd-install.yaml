@@ -46,6 +46,7 @@ spec:
           - argocd-server
           - --staticassets
           - /shared/app
+          - --insecure
         env:
         - name: ARGOCD_SERVER_REPLICAS
           value: "1"
