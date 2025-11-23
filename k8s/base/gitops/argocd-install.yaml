@@ -42,12 +42,10 @@ spec:
         ports:
         - containerPort: 8080
         - containerPort: 8083
-        args:
-          - --staticassets
-          - /shared/app
-          - --insecure
         command:
           - argocd-server
+          - --staticassets
+          - /shared/app
         env:
         - name: ARGOCD_SERVER_REPLICAS
           value: "1"
