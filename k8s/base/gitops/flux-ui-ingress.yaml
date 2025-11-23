@@ -1,27 +1,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: grafana-ingress
-  namespace: monitoring
+  name: flux-ui-ingress
+  namespace: flux-system
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Forwarded-Host $host;
-      proxy_set_header X-Forwarded-Prefix /grafana;
 spec:
   rules:
   - host: localhost
     http:
       paths:
-      - path: /grafana(/|$)(.*)
+      - path: /flux(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
           service:
-            name: grafana-service
+            name: weave-gitops
             port:
-              number: 3000
-
+              number: 9001
 
