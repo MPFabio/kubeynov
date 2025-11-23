@@ -26,7 +26,9 @@ spec:
         - name: GF_SECURITY_ADMIN_PASSWORD
           value: "admin"
         - name: GF_SERVER_ROOT_URL
-          value: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
+          value: "http://localhost:30080/grafana/"
+        - name: GF_SERVER_SERVE_FROM_SUB_PATH
+          value: "true"
         volumeMounts:
         - name: grafana-config
           mountPath: /etc/grafana/grafana.ini
