@@ -51,6 +51,8 @@ spec:
           value: "1"
         - name: ARGOCD_SERVER_BASEHREF
           value: /argocd
+        - name: ARGOCD_SERVER_INSECURE
+          value: "true"
         volumeMounts:
         - name: static-assets
           mountPath: /shared
