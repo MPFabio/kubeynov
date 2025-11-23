@@ -17,18 +17,18 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 # Build des images Docker
 echo "🔨 Construction des images Docker..."
 
-# Build backend
+# Build backend avec cache et timeout augmenté
 echo "📦 Construction de l'image backend..."
 cd "$PROJECT_ROOT/app/backend"
-docker build -t backend:latest . || {
+docker build --progress=plain --no-cache=false -t backend:latest . || {
     echo "❌ Erreur lors du build de l'image backend"
     exit 1
 }
 
-# Build frontend
+# Build frontend avec cache et timeout augmenté
 echo "📦 Construction de l'image frontend..."
 cd "$PROJECT_ROOT/app/frontend"
-docker build -t frontend:latest . || {
+docker build --progress=plain --no-cache=false -t frontend:latest . || {
     echo "❌ Erreur lors du build de l'image frontend"
     exit 1
 }
@@ -103,9 +103,9 @@ echo ""
 echo "✅ Déploiement terminé!"
 echo ""
 echo "📋 URLs d'accès:"
-echo "  - Application: http://localhost"
-echo "  - Prometheus: http://localhost/prometheus"
-echo "  - Grafana: http://localhost/grafana (admin/admin)"
+echo "  - Application: http://localhost:30080"
+echo "  - Prometheus: http://localhost:30080/prometheus"
+echo "  - Grafana: http://localhost:30080/grafana (admin/admin)"
 echo ""
 echo "📊 Statut des pods:"
 kubectl get pods -n app

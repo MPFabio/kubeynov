@@ -2,9 +2,21 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install
+# Installer les dépendances système nécessaires
+RUN apk add --no-cache python3 make g++
 
+# Configurer npm pour être plus rapide
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm config set fetch-timeout 300000 && \
+    npm config set fetch-retries 2
+
+# Copier uniquement les fichiers de dépendances
+COPY package.json ./
+
+# Installer les dépendances avec cache optimisé
+RUN npm install --legacy-peer-deps --no-optional --prefer-offline --no-audit
+
+# Copier le reste et builder
 COPY . .
 RUN npm run build
 

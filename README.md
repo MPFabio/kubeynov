@@ -139,10 +139,10 @@ Une fois le déploiement terminé, les services sont accessibles via :
 
 | Service | URL | Credentials |
 |---------|-----|-------------|
-| **Application** | http://localhost | - |
-| **Prometheus** | http://localhost/prometheus | - |
-| **Grafana** | http://localhost/grafana | admin / admin |
-| **ArgoCD** | http://localhost/argocd | admin / (voir setup-argocd.sh) |
+| **Application** | http://localhost:30080 | - |
+| **Prometheus** | http://localhost:30080/prometheus | - |
+| **Grafana** | http://localhost:30080/grafana | admin / admin |
+| **ArgoCD** | http://localhost:30080/argocd | admin / (voir setup-argocd.sh) |
 
 ### Vérifier le statut
 
