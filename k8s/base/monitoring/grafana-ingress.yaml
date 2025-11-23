@@ -7,10 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Forwarded-Host $host;
-      proxy_set_header X-Forwarded-Prefix /grafana;
+    nginx.ingress.kubernetes.io/proxy-redirect-from: "http://localhost:30080/"
+    nginx.ingress.kubernetes.io/proxy-redirect-to: "http://localhost:30080/grafana/"
 spec:
   rules:
   - host: localhost
