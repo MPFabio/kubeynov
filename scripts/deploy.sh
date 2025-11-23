@@ -20,12 +20,21 @@ echo "🔨 Construction des images Docker..."
 # Build backend
 echo "📦 Construction de l'image backend..."
 cd "$PROJECT_ROOT/app/backend"
-docker build -t backend:latest .
+docker build -t backend:latest . || {
+    echo "❌ Erreur lors du build de l'image backend"
+    exit 1
+}
 
 # Build frontend
 echo "📦 Construction de l'image frontend..."
 cd "$PROJECT_ROOT/app/frontend"
-docker build -t frontend:latest .
+docker build -t frontend:latest . || {
+    echo "❌ Erreur lors du build de l'image frontend"
+    exit 1
+}
+
+# Retourner au répertoire racine
+cd "$PROJECT_ROOT"
 
 # Charger les images dans KinD
 echo "📥 Chargement des images dans KinD..."

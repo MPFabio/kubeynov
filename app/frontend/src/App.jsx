@@ -3,7 +3,8 @@ import Dashboard from './components/Dashboard'
 import Header from './components/Header'
 import './App.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+// Utiliser une URL relative pour que nginx proxy vers le backend
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 function App() {
   const [metrics, setMetrics] = useState(null)
