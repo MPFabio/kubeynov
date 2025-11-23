@@ -19,10 +19,13 @@ spec:
       serviceAccountName: argocd-server
       containers:
       - name: argocd-server
-        image: quay.io/argoproj/argocd:v2.10.0
+        image: quay.io/argoproj/argocd:latest
+        command:
+          - argocd-server
         args:
-          - /usr/local/bin/argocd-server
           - --insecure
+          - --staticassets
+          - /shared/app
         ports:
         - containerPort: 8080
         - containerPort: 8083
@@ -48,6 +51,9 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 30
+        volumeMounts:
+        - name: static-assets
+          mountPath: /shared
         resources:
           requests:
             memory: "256Mi"
@@ -55,4 +61,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+      volumes:
+      - name: static-assets
+        emptyDir: {}
 
