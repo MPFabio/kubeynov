@@ -7,6 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/priority: "500"
+    nginx.ingress.kubernetes.io/proxy-redirect-from: "http://localhost:30080/"
+    nginx.ingress.kubernetes.io/proxy-redirect-to: "http://localhost:30080/prometheus/"
 spec:
   rules:
   - host: localhost
