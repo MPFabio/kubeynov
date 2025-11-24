@@ -10,7 +10,7 @@ Une plateforme DevOps complète déployée sur Kubernetes (KinD) avec monitoring
 - [Installation](#installation)
 - [Déploiement](#déploiement)
 - [Accès aux services](#accès-aux-services)
-- [GitOps avec ArgoCD](#gitops-avec-argocd)
+- [GitOps avec Flux](#gitops-avec-flux)
 - [Structure du projet](#structure-du-projet)
 - [Dépannage](#dépannage)
 - [Développement](#développement)
@@ -23,7 +23,7 @@ Ce projet démontre une plateforme DevOps complète incluant :
 - **API Backend** : Service Node.js/Express avec exposition de métriques Prometheus
 - **Base de données** : PostgreSQL pour stockage des métriques historiques
 - **Monitoring** : Prometheus pour collecte de métriques et Grafana pour visualisation
-- **GitOps** : ArgoCD pour déploiement continu depuis Git
+- **GitOps** : Flux pour déploiement continu depuis Git
 - **Infrastructure** : Tout déployé sur Kubernetes (KinD) avec scripts d'automatisation
 
 ## 🏗️ Architecture
@@ -54,7 +54,7 @@ Ce projet démontre une plateforme DevOps complète incluant :
                 └───────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│                      ArgoCD (GitOps)                         │
+│                      Flux (GitOps)                          │
 │              Surveille le repo GitHub                        │
 │              Déploie automatiquement                         │
 └─────────────────────────────────────────────────────────────┘
@@ -64,7 +64,7 @@ Ce projet démontre une plateforme DevOps complète incluant :
 
 - **Namespace `app`** : Application principale (frontend, backend, database)
 - **Namespace `monitoring`** : Stack de monitoring (Prometheus, Grafana)
-- **Namespace `gitops`** : ArgoCD pour GitOps
+- **Namespace `flux-system`** : Flux pour GitOps
 
 ## 📦 Prérequis
 
@@ -119,7 +119,7 @@ git checkout test
 Ce script va :
 - Créer un cluster KinD nommé `metrics-cluster`
 - Installer l'Ingress Controller Nginx
-- Préparer l'environnement pour ArgoCD
+- Préparer l'environnement pour Flux
 
 3. **Déployer l'application**
 
@@ -142,7 +142,7 @@ Une fois le déploiement terminé, les services sont accessibles via :
 | **Application** | http://localhost:30080 | - |
 | **Prometheus** | http://localhost:30080/prometheus | - |
 | **Grafana** | http://localhost:30080/grafana | admin / admin |
-| **ArgoCD** | http://localhost:30080/argocd | admin / (voir setup-argocd.sh) |
+| **Flux** | Namespace: flux-system | (GitOps, pas d'UI web) |
 
 ### Vérifier le statut
 
@@ -157,39 +157,40 @@ kubectl get svc -A
 kubectl get ingress -A
 ```
 
-## 🔄 GitOps avec ArgoCD
+## 🔄 GitOps avec Flux
 
-ArgoCD surveille le repository GitHub et déploie automatiquement les changements.
+Flux surveille le repository GitHub et déploie automatiquement les changements.
 
 ### Configuration initiale
 
 ```bash
-./scripts/setup-argocd.sh
-```
-
-### Créer les applications ArgoCD
-
-```bash
-kubectl apply -f k8s/base/gitops/argocd-application.yaml
+./scripts/setup-flux.sh
 ```
 
 ### Workflow GitOps
 
 1. **Modifier les manifests** dans `k8s/base/`
-2. **Commit et push** vers la branche `test`
-3. **ArgoCD détecte** les changements automatiquement
+2. **Commit et push** vers la branche `main`
+3. **Flux détecte** les changements automatiquement (intervalle: 5 minutes)
 4. **Déploiement automatique** dans le cluster
 
-### Applications ArgoCD configurées
+### Ressources Flux configurées
 
-- **metrics-dashboard-app** : Déploie l'application (frontend, backend, database)
-- **monitoring-stack** : Déploie Prometheus et Grafana
+- **GitRepository (kubeynov)** : Pointe vers https://github.com/MPFabio/kubeynov (branche main)
+- **Kustomization (kubeynov-app)** : Applique les manifests depuis `k8s/base/`
 
-### Accéder à ArgoCD
+### Vérifier le statut Flux
 
-1. Ouvrir http://localhost/argocd
-2. Se connecter avec `admin` / (mot de passe récupéré via `setup-argocd.sh`)
-3. Voir les applications et leur statut de synchronisation
+```bash
+# Voir les GitRepositories
+kubectl get gitrepository -n flux-system
+
+# Voir les Kustomizations
+kubectl get kustomization -n flux-system
+
+# Voir les logs
+kubectl logs -n flux-system -l app=kustomize-controller
+```
 
 ## 📁 Structure du projet
 
@@ -213,12 +214,12 @@ kubeynov/
 │       ├── namespace/
 │       ├── app/             # Manifests application
 │       ├── monitoring/      # Manifests monitoring
-│       └── gitops/          # Manifests ArgoCD
+│       └── gitops/          # Manifests Flux
 ├── scripts/
 │   ├── setup-kind.sh        # Configuration cluster KinD
 │   ├── deploy.sh            # Déploiement complet
 │   ├── teardown.sh          # Nettoyage
-│   └── setup-argocd.sh      # Configuration ArgoCD
+│   └── setup-flux.sh        # Configuration Flux
 └── README.md
 ```
 
@@ -265,17 +266,20 @@ kubectl get configmap -n monitoring prometheus-config -o yaml
 kubectl logs -n monitoring -l app=prometheus
 ```
 
-### ArgoCD ne synchronise pas
+### Flux ne synchronise pas
 
 ```bash
-# Vérifier le statut des applications
-kubectl get applications -n argocd
+# Vérifier le statut des GitRepositories
+kubectl get gitrepository -n flux-system
+kubectl describe gitrepository kubeynov -n flux-system
+
+# Vérifier le statut des Kustomizations
+kubectl get kustomization -n flux-system
+kubectl describe kustomization kubeynov-app -n flux-system
 
 # Vérifier les logs
-kubectl logs -n argocd -l app.kubernetes.io/name=argocd-application-controller
-
-# Vérifier la connexion au repo
-# Dans l'UI ArgoCD, aller dans Settings > Repositories
+kubectl logs -n flux-system -l app=kustomize-controller
+kubectl logs -n flux-system -l app=source-controller
 ```
 
 ### Réinitialiser complètement
@@ -368,7 +372,7 @@ Ce projet est un projet éducatif/démonstration.
 ## 🙏 Remerciements
 
 - [KinD](https://kind.sigs.k8s.io/) pour Kubernetes in Docker
-- [ArgoCD](https://argo-cd.readthedocs.io/) pour GitOps
+- [Flux](https://fluxcd.io/) pour GitOps
 - [Prometheus](https://prometheus.io/) pour le monitoring
 - [Grafana](https://grafana.com/) pour la visualisation
 

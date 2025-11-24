@@ -66,10 +66,7 @@ kubectl wait --namespace ingress-nginx \
   --selector=app.kubernetes.io/component=controller \
   --timeout=300s
 
-# Installer les CRDs ArgoCD
-echo "📦 Installation des CRDs ArgoCD..."
-kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml || true
+# Flux sera installé via setup-flux.sh si nécessaire
 
 echo "✅ Cluster KinD configuré avec succès!"
 echo ""
