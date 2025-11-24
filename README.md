@@ -2,7 +2,7 @@
 
 Une plateforme DevOps complète déployée sur Kubernetes (KinD) avec monitoring, GitOps, et une application web moderne.
 
-## 📋 Table des matières
+## Table des matières
 
 - [Vue d'ensemble](#vue-densemble)
 - [Architecture](#architecture)
@@ -15,7 +15,7 @@ Une plateforme DevOps complète déployée sur Kubernetes (KinD) avec monitoring
 - [Dépannage](#dépannage)
 - [Développement](#développement)
 
-## 🎯 Vue d'ensemble
+## Vue d'ensemble
 
 Ce projet démontre une plateforme DevOps complète incluant :
 
@@ -26,7 +26,7 @@ Ce projet démontre une plateforme DevOps complète incluant :
 - **GitOps** : Flux pour déploiement continu depuis Git
 - **Infrastructure** : Tout déployé sur Kubernetes (KinD) avec scripts d'automatisation
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -66,7 +66,7 @@ Ce projet démontre une plateforme DevOps complète incluant :
 - **Namespace `monitoring`** : Stack de monitoring (Prometheus, Grafana)
 - **Namespace `flux-system`** : Flux pour GitOps
 
-## 📦 Prérequis
+## Prérequis
 
 - **Docker** : Version 20.10 ou supérieure
 - **KinD** : Kubernetes in Docker ([Installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation))
@@ -100,7 +100,7 @@ choco install kind
 choco install kubernetes-cli
 ```
 
-## 🚀 Installation
+## Installation
 
 1. **Cloner le repository**
 
@@ -133,7 +133,7 @@ Ce script va :
 - Déployer tous les composants (app, monitoring)
 - Configurer les services et ingress
 
-## 🌐 Accès aux services
+## Accès aux services
 
 Une fois le déploiement terminé, les services sont accessibles via :
 
@@ -157,7 +157,7 @@ kubectl get svc -A
 kubectl get ingress -A
 ```
 
-## 🔄 GitOps avec Flux
+## GitOps avec Flux
 
 Flux surveille le repository GitHub et déploie automatiquement les changements.
 
@@ -192,7 +192,7 @@ kubectl get kustomization -n flux-system
 kubectl logs -n flux-system -l app=kustomize-controller
 ```
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 kubeynov/
@@ -223,7 +223,7 @@ kubeynov/
 └── README.md
 ```
 
-## 🔧 Dépannage
+## Dépannage
 
 ### Les pods ne démarrent pas
 
@@ -293,7 +293,7 @@ kubectl logs -n flux-system -l app=source-controller
 ./scripts/deploy.sh
 ```
 
-## 💻 Développement
+## Développement
 
 ### Modifier l'application
 
@@ -327,7 +327,7 @@ kubectl rollout restart deployment/frontend -n app
 2. Appliquer : `kubectl apply -f k8s/base/monitoring/grafana-dashboards-configmap.yaml`
 3. Redémarrer Grafana : `kubectl rollout restart deployment/grafana -n monitoring`
 
-## 📊 Métriques exposées
+## Métriques exposées
 
 L'application expose les métriques suivantes via Prometheus :
 
@@ -338,9 +338,9 @@ L'application expose les métriques suivantes via Prometheus :
 - `http_requests_total` : Total des requêtes HTTP
 - `http_request_duration_seconds` : Durée des requêtes HTTP
 
-## 🔐 Sécurité
+## Sécurité
 
-⚠️ **Note importante** : Cette configuration est destinée à un environnement de développement. Pour la production :
+**Note importante** : Cette configuration est destinée à un environnement de développement. Pour la production :
 
 - Utiliser des secrets Kubernetes sécurisés
 - Configurer TLS/SSL pour les ingress
@@ -348,7 +348,7 @@ L'application expose les métriques suivantes via Prometheus :
 - Implémenter des politiques de sécurité réseau
 - Configurer RBAC approprié
 
-## 📝 Workflow Git
+## Workflow Git
 
 Le projet utilise un workflow avec deux branches :
 
@@ -357,7 +357,7 @@ Le projet utilise un workflow avec deux branches :
 
 Tous les changements sont faits sur `test`, puis mergés vers `main` après validation.
 
-## 🤝 Contribution
+## Contribution
 
 1. Créer une branche depuis `test`
 2. Faire les modifications
@@ -365,11 +365,11 @@ Tous les changements sont faits sur `test`, puis mergés vers `main` après vali
 4. Créer une Pull Request vers `test`
 5. Après validation, merge vers `main`
 
-## 📄 Licence
+## Licence
 
 Ce projet est un projet éducatif/démonstration.
 
-## 🙏 Remerciements
+## Remerciements
 
 - [KinD](https://kind.sigs.k8s.io/) pour Kubernetes in Docker
 - [Flux](https://fluxcd.io/) pour GitOps
@@ -379,6 +379,6 @@ Ce projet est un projet éducatif/démonstration.
 ---
 
 **Auteur** : Fabio  
-**Date** : 2024  
+**Date** : 2025  
 **Version** : 1.0.0
 

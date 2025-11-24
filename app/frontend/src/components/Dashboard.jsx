@@ -33,14 +33,14 @@ const Dashboard = ({ metrics }) => {
         <MetricCard
           title="Requests/sec"
           value={currentMetrics.requests || 0}
-          icon="📊"
+          icon="chart"
           color="purple"
           trend={metrics.trends?.requests}
         />
         <MetricCard
           title="Latency"
           value={`${currentMetrics.latency || 0}ms`}
-          icon="⏱️"
+          icon="clock"
           color="orange"
           trend={metrics.trends?.latency}
         />

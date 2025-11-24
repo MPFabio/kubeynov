@@ -2,10 +2,10 @@
 
 set -e
 
-echo "🗑️  Nettoyage de la plateforme DevOps..."
+echo "Nettoyage de la plateforme DevOps..."
 
 # Supprimer les ressources Kubernetes
-echo "📦 Suppression des ressources Kubernetes..."
+echo "Suppression des ressources Kubernetes..."
 
 kubectl delete -f k8s/base/app/ingress.yaml --ignore-not-found=true
 kubectl delete -f k8s/base/app/frontend-service.yaml --ignore-not-found=true
@@ -35,7 +35,7 @@ kubectl delete -f k8s/base/monitoring/prometheus-pvc.yaml --ignore-not-found=tru
 kubectl delete -f k8s/base/monitoring/prometheus-configmap.yaml --ignore-not-found=true
 
 # Supprimer les namespaces (cela supprime aussi toutes les ressources)
-echo "📁 Suppression des namespaces..."
+echo "Suppression des namespaces..."
 kubectl delete namespace app --ignore-not-found=true --wait=true
 kubectl delete namespace monitoring --ignore-not-found=true --wait=true
 kubectl delete namespace gitops --ignore-not-found=true --wait=true
@@ -44,13 +44,13 @@ kubectl delete namespace gitops --ignore-not-found=true --wait=true
 read -p "Voulez-vous supprimer le cluster KinD? (y/N) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "🗑️  Suppression du cluster KinD..."
+    echo "Suppression du cluster KinD..."
     kind delete cluster --name metrics-cluster
-    echo "✅ Cluster supprimé!"
+    echo "Cluster supprime!"
 else
-    echo "ℹ️  Cluster KinD conservé."
+    echo "Cluster KinD conserve."
 fi
 
-echo "✅ Nettoyage terminé!"
+echo "Nettoyage termine!"
 
 

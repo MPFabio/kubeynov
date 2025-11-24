@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🧪 TEST COMPLET DU PROJET"
+echo "TEST COMPLET DU PROJET"
 echo "========================"
 
 # 1. Build frontend
@@ -38,5 +38,5 @@ kubectl get pods -n monitoring
 kubectl get svc -n app
 kubectl get ingress -n app
 
-echo "✅ TEST TERMINÉ"
+echo "TEST TERMINE"
 
