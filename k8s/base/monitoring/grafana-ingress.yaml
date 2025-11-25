@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/priority: "500"
+    nginx.ingress.kubernetes.io/proxy-redirect-from: "http://localhost:30080/"
+    nginx.ingress.kubernetes.io/proxy-redirect-to: "http://localhost:30080/grafana/"
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /grafana(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: grafana-service
+            port:
+              number: 3000

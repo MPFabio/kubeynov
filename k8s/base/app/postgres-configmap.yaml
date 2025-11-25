@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: app
+data:
+  POSTGRES_DB: "metricsdb"
+  POSTGRES_USER: "postgres"
+
+

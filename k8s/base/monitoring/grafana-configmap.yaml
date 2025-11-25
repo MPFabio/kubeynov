@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: monitoring
+data:
+  grafana.ini: |
+    [server]
+    root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+    
+    [security]
+    admin_user = admin
+    admin_password = admin
+    
+    [datasources]
+    [datasources.prometheus]
+    type = prometheus
+    url = http://prometheus-service:9090
+    access = proxy
+    isDefault = true
+
+
